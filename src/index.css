@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+:root {
+  --bg-color: #fff0f3;
+  --primary-color: #ff4d6d;
+  --secondary-color: #ff8fa3;
+  --accent-color: #c9184a;
+  --text-color: #590d22;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --shadow: 0 4px 20px rgba(255, 77, 109, 0.15);
+
+  --font-main: 'Outfit', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Utility classes */
+.container {
+  width: 100%;
+  max-width: 480px;
+  /* Mobile width cap */
+  padding: 20px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  color: var(--accent-color);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
