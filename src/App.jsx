@@ -9,6 +9,8 @@ import ReasonsWhy from './components/ReasonsWhy';
 import BucketList from './components/BucketList';
 import DateCalendar from './components/DateCalendar';
 
+import ActivityFeed from './components/ActivityFeed';
+
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [hearts, setHearts] = useState([]);
@@ -55,7 +57,7 @@ function App() {
                   animation: 'pulse 2s infinite'
                 }}
               />
-              <h1 style={{ fontSize: '2.2rem', margin: 0 }}>Para Ti ❤️ constuyamos juntos esta historia</h1>
+              <h1 style={{ fontSize: '2.2rem', margin: 0 }}>Para Ti ❤️ construyamos juntos esta historia</h1>
               <p style={{ opacity: 0.8, marginTop: '5px' }}>Mi lugar favorito es contigo</p>
             </header>
 
@@ -63,6 +65,9 @@ function App() {
             <div style={{ marginBottom: '25px' }}>
               <RelationshipTimer />
             </div>
+
+            {/* Activity Feed */}
+            <ActivityFeed />
 
             {/* Reasons Why Widget */}
             <div style={{ marginBottom: '25px' }}>

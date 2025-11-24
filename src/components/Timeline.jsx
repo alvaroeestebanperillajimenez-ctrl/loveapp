@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logActivity } from '../utils/activityLogger';
 import { Heart, Star, MapPin, Calendar, Plus, Save, X, Trash2 } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
@@ -38,6 +39,7 @@ const Timeline = () => {
                 ...newEvent,
                 createdAt: serverTimestamp()
             });
+            logActivity('Nuevo Recuerdo', `Se agregó: "${newEvent.title}"`, 'timeline');
             setShowAddModal(false);
             setNewEvent({ date: '', title: '', desc: '', icon: 'Heart' });
         } catch (error) {

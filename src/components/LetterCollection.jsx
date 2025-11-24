@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logActivity } from '../utils/activityLogger';
 import { Mail, X, Plus, Trash2, Pencil } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc } from 'firebase/firestore';
@@ -38,18 +39,24 @@ const LetterCollection = () => {
         if (!newLetter.title || !newLetter.content) return;
 
         try {
+            const letterData = {
+                title: newLetter.title,
+                content: newLetter.content,
+                color: newLetter.color
+            };
+
             if (editingId) {
-                // Actualizar carta existente
                 await updateDoc(doc(db, "letters", editingId), {
-                    ...newLetter,
+                    ...letterData,
                     updatedAt: serverTimestamp()
                 });
+                logActivity('Carta Editada', `Se editó la carta "${newLetter.title}"`, 'letter');
             } else {
-                // Crear nueva carta
                 await addDoc(collection(db, "letters"), {
-                    ...newLetter,
+                    ...letterData,
                     createdAt: serverTimestamp()
                 });
+                logActivity('Nueva Carta', `Se escribió una carta: "${newLetter.title}"`, 'letter');
             }
             setShowAddModal(false);
             setNewLetter({ title: '', content: '', color: '#ff4d6d' });

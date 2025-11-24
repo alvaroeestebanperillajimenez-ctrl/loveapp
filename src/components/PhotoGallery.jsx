@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logActivity } from '../utils/activityLogger';
 import { X, FolderHeart, ArrowLeft, Plus, Upload, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { db, storage } from '../firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, where, serverTimestamp, deleteDoc, doc, getDocs } from 'firebase/firestore';
@@ -133,6 +134,8 @@ const PhotoGallery = () => {
                     caption: '',
                     createdAt: serverTimestamp()
                 });
+
+                logActivity('Nueva Foto', `Se agregó una foto al álbum "${currentFolder.name}"`, 'photo', currentFolder.name);
 
                 setUploading(false);
                 setUploadProgress(0);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logActivity } from '../utils/activityLogger';
 import { CheckCircle2, Circle, Plus, Trash2, ListTodo } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc } from 'firebase/firestore';
@@ -28,6 +29,7 @@ const BucketList = () => {
                 completed: false,
                 createdAt: serverTimestamp()
             });
+            logActivity('Nuevo Deseo', `Se agregó: "${newItem}"`, 'bucket');
             setNewItem('');
         } catch (error) {
             console.error("Error adding item:", error);
@@ -39,6 +41,9 @@ const BucketList = () => {
             await updateDoc(doc(db, "bucketlist", item.id), {
                 completed: !item.completed
             });
+            if (!item.completed) {
+                logActivity('Deseo Cumplido', `¡Lograron: "${item.text}"!`, 'bucket');
+            }
         } catch (error) {
             console.error("Error toggling item:", error);
         }

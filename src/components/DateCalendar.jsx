@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { logActivity } from '../utils/activityLogger';
 import { CalendarHeart, Plus, Trash2, Clock } from 'lucide-react';
 import { db } from '../firebase';
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
@@ -27,6 +28,7 @@ const DateCalendar = () => {
                 ...newEvent,
                 createdAt: serverTimestamp()
             });
+            logActivity('Nueva Cita', `Se agendó: "${newEvent.title}"`, 'calendar');
             setNewEvent({ title: '', date: '' });
         } catch (error) {
             console.error("Error adding event:", error);
