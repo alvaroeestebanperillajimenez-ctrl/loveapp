@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Heart, Music, Image as ImageIcon, MessageCircleHeart, CalendarHeart, Mail, History } from 'lucide-react';
 import MusicPlayer from './components/MusicPlayer';
 import PhotoGallery from './components/PhotoGallery';
@@ -8,12 +8,31 @@ import RelationshipTimer from './components/RelationshipTimer';
 import ReasonsWhy from './components/ReasonsWhy';
 import BucketList from './components/BucketList';
 import DateCalendar from './components/DateCalendar';
-
 import ActivityFeed from './components/ActivityFeed';
+import UsernameModal from './components/UsernameModal';
+import LoveCounter from './components/LoveCounter';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [hearts, setHearts] = useState([]);
+  const [username, setUsername] = useState(null);
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
+
+  // Check for existing username in localStorage
+  useEffect(() => {
+    const savedUsername = localStorage.getItem('love_app_username');
+    if (savedUsername) {
+      setUsername(savedUsername);
+    } else {
+      setShowUsernameModal(true);
+    }
+  }, []);
+
+  const handleUsernameSubmit = (name) => {
+    setUsername(name);
+    localStorage.setItem('love_app_username', name);
+    setShowUsernameModal(false);
+  };
 
   const spawnHeart = () => {
     const id = Date.now();
@@ -65,6 +84,11 @@ function App() {
             <div style={{ marginBottom: '25px' }}>
               <RelationshipTimer />
             </div>
+
+            {/* Love Counter */}
+            {username && (
+              <LoveCounter username={username} />
+            )}
 
             {/* Activity Feed */}
             <ActivityFeed />
@@ -165,6 +189,11 @@ function App() {
         <NavIcon icon={<Music />} label="Música" isActive={activeTab === 'music'} onClick={() => setActiveTab('music')} />
         <NavIcon icon={<Mail />} label="Cartas" isActive={activeTab === 'letters'} onClick={() => setActiveTab('letters')} />
       </nav>
+
+      {/* Username Modal */}
+      {showUsernameModal && (
+        <UsernameModal onSubmit={handleUsernameSubmit} />
+      )}
     </div>
   );
 }
