@@ -11,18 +11,25 @@ import DateCalendar from './components/DateCalendar';
 import ActivityFeed from './components/ActivityFeed';
 import UsernameModal from './components/UsernameModal';
 import LoveCounter from './components/LoveCounter';
+import NotificationPrompt from './components/NotificationPrompt';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [hearts, setHearts] = useState([]);
   const [username, setUsername] = useState(null);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [showNotificationPrompt, setShowNotificationPrompt] = useState(false);
 
   // Check for existing username in localStorage
   useEffect(() => {
     const savedUsername = localStorage.getItem('love_app_username');
     if (savedUsername) {
       setUsername(savedUsername);
+      // Show notification prompt after username is set
+      const notificationAsked = localStorage.getItem('notification_asked');
+      if (!notificationAsked) {
+        setTimeout(() => setShowNotificationPrompt(true), 2000);
+      }
     } else {
       setShowUsernameModal(true);
     }
@@ -32,6 +39,13 @@ function App() {
     setUsername(name);
     localStorage.setItem('love_app_username', name);
     setShowUsernameModal(false);
+    // Show notification prompt after username modal
+    setTimeout(() => setShowNotificationPrompt(true), 1000);
+  };
+
+  const handleNotificationClose = () => {
+    setShowNotificationPrompt(false);
+    localStorage.setItem('notification_asked', 'true');
   };
 
   const spawnHeart = () => {
@@ -193,6 +207,11 @@ function App() {
       {/* Username Modal */}
       {showUsernameModal && (
         <UsernameModal onSubmit={handleUsernameSubmit} />
+      )}
+
+      {/* Notification Prompt */}
+      {showNotificationPrompt && (
+        <NotificationPrompt onClose={handleNotificationClose} />
       )}
     </div>
   );

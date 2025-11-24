@@ -67,6 +67,12 @@ export const logActivity = async (action, details, icon = 'info', folderName = n
                     details: `Se agregaron fotos al álbum "${folderName}"`,
                     createdAt: serverTimestamp() // Actualizar timestamp
                 });
+
+                // Send notification for grouped photos
+                if (typeof window !== 'undefined') {
+                    const { sendActivityNotification } = await import('./notificationHelper.js');
+                    await sendActivityNotification('Nuevas Fotos', `Se agregaron fotos al álbum "${folderName}"`);
+                }
                 return;
             }
         }
@@ -78,8 +84,13 @@ export const logActivity = async (action, details, icon = 'info', folderName = n
             icon,
             createdAt: serverTimestamp()
         });
+
+        // Send notification for new activity
+        if (typeof window !== 'undefined') {
+            const { sendActivityNotification } = await import('./notificationHelper.js');
+            await sendActivityNotification(action, details);
+        }
     } catch (error) {
         console.error("Error logging activity:", error);
     }
 };
-

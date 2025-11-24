@@ -67,3 +67,24 @@ self.addEventListener('activate', (event) => {
     );
     self.clients.claim();
 });
+
+// Notification click event - open app when notification is clicked
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+            // Check if app is already open
+            for (let i = 0; i < clientList.length; i++) {
+                const client = clientList[i];
+                if (client.url === '/' && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            // If not open, open new window
+            if (clients.openWindow) {
+                return clients.openWindow('/');
+            }
+        })
+    );
+});
